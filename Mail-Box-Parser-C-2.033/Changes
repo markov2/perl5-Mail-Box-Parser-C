@@ -1,0 +1,15 @@
+Revision history for Perl extension Mail::Box::Parser::C.
+
+The numbers will be sychronized with that of Mail::Box.  When Mail::Box
+is upgraded, the old version of Mail::Box::Parser::C may stay valid.
+
+2.033: Tue Dec 24 14:58:12 CET 2002
+
+	Improvements:
+
+	- First implementation (that's an improvement!!!)
+
+0.01  Wed Dec  4 15:01:41 2002
+	- original version; created by h2xs 1.21 with options
+		-A Mail::Box::Parser::C
+
