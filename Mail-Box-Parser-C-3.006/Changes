@@ -2,6 +2,17 @@ Revision history for Perl extension Mail::Box::Parser::C.
 
 Mail::Box::Parser::C requires Mail::Box.
 
+version 3.006: Wed Sep 22 14:50:08 CEST 2004
+
+	Interface changes:
+
+	- bodyAsList() now returns a ref-array of lines, in stead of a list
+	  of lines.  This is required by MailBox v2.058
+
+	Improvements:
+
+	- new method get_filehandle()
+
 version 3.005: Mon May 31 17:26:23 CEST 2004
 
 	Fixes:

@@ -1,5 +1,5 @@
 package Mail::Box::Parser::C;
-our $VERSION = 3.005;
+our $VERSION = 3.006;
 
 use strict;
 use warnings;
@@ -36,6 +36,7 @@ bootstrap Mail::Box::Parser::C $VERSION;
 ## Defined in the library
 sub open_filename($$$);
 sub open_filehandle($$$);
+sub get_filehandle($);
 sub close_file($);
 sub push_separator($$);
 sub pop_separator($);

@@ -338,7 +338,7 @@ static int is_separator(Separator *sep, char *line)
 static char **read_stripped_lines(Mailbox *box,
     int expect_chars, int expect_lines,
     int *nr_chars,    int *nr_lines)
-{   char   ** lines;
+{   char   ** lines      = NULL;
     int       max_lines;
     long      start      = file_position(box);
     int       last_blank = 0;
@@ -580,7 +580,7 @@ MBPC_open_filename(char *name, char *mode, int trace)
     boxnr     = take_box_slot(box);
 
     /*fprintf(stderr, "Open is done.\n");*/
-    RETVAL = boxnr;
+    RETVAL    = boxnr;
 
   OUTPUT:
     RETVAL
@@ -603,7 +603,7 @@ MBPC_open_filehandle(FILE *fh, char *name, int trace)
     boxnr     = take_box_slot(box);
 
     /*fprintf(stderr, "Open with filehande is done.\n");*/
-    RETVAL = boxnr;
+    RETVAL    = boxnr;
 
   OUTPUT:
     RETVAL
@@ -915,6 +915,7 @@ MBPC_body_as_list(int boxnr, int expect_chars, int expect_lines)
     int      nr_chars = 0;
     int      line_nr;
     long     begin;
+    AV     * results;
 
   PPCODE:
     box   = get_box(boxnr);
@@ -932,11 +933,16 @@ MBPC_body_as_list(int boxnr, int expect_chars, int expect_lines)
 
     /* Allocating the lines for real. */
 
+    results = (AV *)sv_2mortal((SV *)newAV());
+    av_extend(results, nr_lines);
+
     for(line_nr=0; line_nr<nr_lines; line_nr++)
     {   char *line = lines[line_nr];
-        XPUSHs(sv_2mortal(newSVpv(line, 0)));
+        av_push(results, newSVpv(line, 0));
         Safefree(line);
     }
+
+    XPUSHs(sv_2mortal(newRV((SV *)results)));
 
     skip_empty_lines(box);
     Safefree(lines);
@@ -1033,3 +1039,23 @@ MBPC_body_delayed(int boxnr, int expect_chars, int expect_lines)
         PUSHs(sv_2mortal(newSViv((IV)nr_lines)));
         skip_empty_lines(box);
     }
+
+#
+# get_filehandle
+#
+
+FILE *
+MBPC_get_filehandle(int boxnr)
+
+  PREINIT:
+    Mailbox * box;
+
+  CODE:
+    box       = get_box(boxnr);
+    if(box==NULL) XSRETURN_UNDEF;
+
+    RETVAL    = box->file;
+
+  OUTPUT:
+    RETVAL
+
