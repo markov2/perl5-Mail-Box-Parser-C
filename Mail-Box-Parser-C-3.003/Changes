@@ -1,7 +1,13 @@
 Revision history for Perl extension Mail::Box::Parser::C.
 
-The numbers will be sychronized with that of Mail::Box.  When Mail::Box
-is upgraded, the old version of Mail::Box::Parser::C may stay valid.
+Mail::Box::Parser::C requires Mail::Box.
+
+3.003: Thu Aug 28 08:30:26 CEST 2003
+
+	Fixes:
+
+	- Removal of the Mail::Box dependency caused the test to fail!
+	  Now only tries to compile itself when Mail::Box is installed.
 
 3.002: Wed Aug 27 15:09:46 CEST 2003
 
