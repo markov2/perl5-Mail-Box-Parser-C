@@ -3,6 +3,17 @@ Revision history for Perl extension Mail::Box::Parser::C.
 The numbers will be sychronized with that of Mail::Box.  When Mail::Box
 is upgraded, the old version of Mail::Box::Parser::C may stay valid.
 
+3.000:
+
+	Improvements:
+
+	- Do not complain about lines which look like MBOX separators,
+          but which have no year in them.  Needed for broken MBOX
+	  applications, like mutt.
+
+	- Bumped version number into very different from MailBox, so
+	  people do not think that they are related.
+
 2.034: Tue Jan  7 09:43:40 CET 2003
 
 	Improvements:

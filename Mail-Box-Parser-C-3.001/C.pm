@@ -1,11 +1,24 @@
 package Mail::Box::Parser::C;
-our $VERSION = 2.034;
+our $VERSION = 3.001;
 
 use strict;
 use warnings;
 use Carp;
 
 use base qw/Mail::Box::Parser Exporter DynaLoader/;
+
+=head1 NAME
+
+Mail::Box::Parser::C - Parsing folders for MailBox with C routines
+
+=head1 DESCRIPTION
+
+This is an optional module for MailBox, and will (once installed)
+automatically be used by MailBox to parse e-mail message content when
+the message is supplied as file-handle.  In all other cases,
+MailBox will use L<Mail::Box::Parser::Perl>.
+
+=cut
 
 use Mail::Message::Field;
 

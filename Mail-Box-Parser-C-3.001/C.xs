@@ -2,6 +2,7 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#include <ctype.h>
 
 #define TRACE_INTERNAL  7  /* synchronize this with the %trace_levels */
 #define NO_TRACE        6  /*   in Mail::Reporter                     */
@@ -317,6 +318,24 @@ static void skip_empty_lines(Mailbox *box)
  * to provide the real location.
  */
 
+static int is_separator(Separator *sep, char *line)
+{  
+   if(strncmp(sep->line, line, sep->length)!=0) return 0;
+
+   if(strcmp(sep->line, "From ") !=0) return 1;
+
+   /* From separators shall contain a year in the line */
+   while(*line)
+   {   if(   (line[0]=='1' || line[0]=='2')
+          && isdigit(line[1]) && isdigit(line[2]) && isdigit(line[3])
+         ) return 1;
+
+       line++;
+   }
+
+   return 0;
+}
+
 static char **read_stripped_lines(Mailbox *box,
     int expect_chars, int expect_lines,
     int *nr_chars,    int *nr_lines)
@@ -362,7 +381,7 @@ static char **read_stripped_lines(Mailbox *box,
          */
 
         sep = box->separators;
-        while(sep != NULL && strncmp(sep->line, line, sep->length)!=0)
+        while(sep != NULL && !is_separator(sep, line))
             sep = sep->next;
 
         if(sep!=NULL)
@@ -459,7 +478,7 @@ static int scan_stripped_lines(Mailbox *box,
          */
 
         sep = box->separators;
-        while(sep != NULL && strncmp(sep->line, line, sep->length)!=0)
+        while(sep != NULL && !is_separator(sep, line))
             sep = sep->next;
 
         if(sep!=NULL)
