@@ -184,7 +184,6 @@ static int goto_position(Mailbox *box, long where)
 }
 
 /*
-/*
  * read_header_line
  */
 

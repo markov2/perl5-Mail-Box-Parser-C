@@ -4,9 +4,7 @@ BEGIN
 {
     eval "require Mail::Box::Parser";
     if($@)
-    {
-warn $@;
-         plan skip_all =>
+    {    plan skip_all =>
              "Skipping tests, because MailBox is not installed (yet)\n";
          exit 0;
     }
