@@ -3,7 +3,18 @@ Revision history for Perl extension Mail::Box::Parser::C.
 The numbers will be sychronized with that of Mail::Box.  When Mail::Box
 is upgraded, the old version of Mail::Box::Parser::C may stay valid.
 
-3.000:
+3.002: Wed Aug 27 15:09:46 CEST 2003
+
+	Improvements:
+
+	- Does not depend on Mail::Box anymore, because Mail::Box may
+	  required Mail::Box::Parser::C, which results in a
+	  cyclic dependency. [Liz Mattijsen]
+
+	 -[Ron Savage] and [Tassilo v Parseval] helped to remove all
+	  compiler warnings for Windows C++.
+
+3.001: Aug 6, 2003
 
 	Improvements:
 

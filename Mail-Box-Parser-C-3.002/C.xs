@@ -51,9 +51,10 @@ typedef struct
     int         dosmode;
 
     int         strip_gt;
-    int         keep_line;      /* unget line */
+    int         keep_line;         /* unget line */
 
-    char        line[MAX_LINE+1];
+    char        line[MAX_LINE+2];  /* one more for missing newline on *
+                                    * last line of file on Windows    */
     long        line_start;
 } Mailbox;
 
@@ -142,7 +143,7 @@ static char * get_one_line(Mailbox *box)
         return box->line;
     }
 
-    box->line_start = ftell(box->file);
+    box->line_start = (long)ftell(box->file);
     if(!fgets(box->line, MAX_LINE, box->file))
         return NULL;
 
@@ -169,7 +170,7 @@ static char * get_one_line(Mailbox *box)
  */
 
 static long file_position(Mailbox *box)
-{   return box->keep_line ? box->line_start : ftell(box->file);
+{   return box->keep_line ? box->line_start : (long)ftell(box->file);
 }
 
 /*
@@ -190,7 +191,6 @@ static int goto_position(Mailbox *box, long where)
 static int read_header_line(Mailbox *box, SV **field, SV **content)
 {
     char * line;
-    char * begin;
     char * reader;
     int    length, field_error;
 
@@ -206,7 +206,7 @@ static int read_header_line(Mailbox *box, SV **field, SV **content)
         ;
 
     if(*reader=='\n')
-    {   fprintf(stderr, "Unexpected end of header:\n  %s", line);
+    {   fprintf(stderr, "Unexpected end of header (C parser):\n  %s", line);
         box->keep_line = 1;
         return 0;
     }
@@ -414,7 +414,7 @@ static char **read_stripped_lines(Mailbox *box,
          */
 
         if(*nr_lines >= max_lines)
-        {   max_lines *= 1.5;
+        {   max_lines = max_lines + max_lines/2;
             lines = Renew(lines, max_lines, char *);
         }
 
@@ -563,8 +563,6 @@ MBPC_open_filename(char *name, char *mode, int trace)
 
   PREINIT:
     Mailbox * box;
-    SV      * obj;
-    int       filename_length;
     int       boxnr;
     FILE    * file;
 
@@ -597,7 +595,6 @@ MBPC_open_filehandle(FILE *fh, char *name, int trace)
 
   PREINIT:
     Mailbox * box;
-    SV      * obj;
     int       boxnr;
 
   CODE:
@@ -687,14 +684,13 @@ MBPC_pop_separator(int boxnr)
   PREINIT:
     Mailbox   *box;
     Separator *old;
-    SV        *line;
 
   CODE:
     box  = get_box(boxnr);
-    if(box==NULL) return XSRETURN_UNDEF;
+    if(box==NULL) XSRETURN_UNDEF;
 
     old = box->separators;
-    if(old==NULL) return XSRETURN_UNDEF;
+    if(old==NULL) XSRETURN_UNDEF;
 
     if(strncmp(old->line, "From ", old->length)==0)
         box->strip_gt--;
@@ -889,14 +885,14 @@ MBPC_body_as_string(int boxnr, int expect_chars, int expect_lines)
 
     /* Join the strings. */
     result = newSVpv("",0);
-    SvGROW(result, nr_chars);
+    SvGROW(result, (unsigned int)nr_chars);
 
     for(line_nr=0; line_nr<nr_lines; line_nr++)
     {   sv_catpv(result, lines[line_nr]);
         Safefree(lines[line_nr]);
     }
 
-    skip_empty_lines;
+    skip_empty_lines(box);
     Safefree(lines);
 
     EXTEND(SP, 3);
@@ -943,7 +939,7 @@ MBPC_body_as_list(int boxnr, int expect_chars, int expect_lines)
         Safefree(line);
     }
 
-    skip_empty_lines;
+    skip_empty_lines(box);
     Safefree(lines);
 
 
@@ -983,11 +979,11 @@ MBPC_body_as_file(int boxnr, FILE *out, int expect_chars, int expect_lines)
     /* write the lines to file. */
 
     for(line_nr=0; line_nr<nr_lines; line_nr++)
-    {   fputs(lines[line_nr], out);
+    {   fprintf(out, "%s", lines[line_nr]);
         Safefree(lines[line_nr]);
     }
 
-    skip_empty_lines;
+    skip_empty_lines(box);
     Safefree(lines);
 
 
@@ -1001,7 +997,6 @@ MBPC_body_delayed(int boxnr, int expect_chars, int expect_lines)
 
   PREINIT:
     Mailbox *box;
-    char   **lines;
     int      nr_lines = 0;
     int      nr_chars = 0;
     long     begin;
@@ -1025,7 +1020,7 @@ MBPC_body_delayed(int boxnr, int expect_chars, int expect_lines)
             PUSHs(sv_2mortal(newSViv((IV)end)));
             PUSHs(sv_2mortal(newSViv((IV)expect_chars)));
             PUSHs(sv_2mortal(newSViv((IV)expect_lines)));
-            skip_empty_lines;
+            skip_empty_lines(box);
             XSRETURN(4);
         }
     }
@@ -1037,5 +1032,5 @@ MBPC_body_delayed(int boxnr, int expect_chars, int expect_lines)
         PUSHs(sv_2mortal(newSViv((IV)file_position(box))));
         PUSHs(sv_2mortal(newSViv((IV)nr_chars)));
         PUSHs(sv_2mortal(newSViv((IV)nr_lines)));
-        skip_empty_lines;
+        skip_empty_lines(box);
     }
