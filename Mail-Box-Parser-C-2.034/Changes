@@ -3,6 +3,12 @@ Revision history for Perl extension Mail::Box::Parser::C.
 The numbers will be sychronized with that of Mail::Box.  When Mail::Box
 is upgraded, the old version of Mail::Box::Parser::C may stay valid.
 
+2.034: Tue Jan  7 09:43:40 CET 2003
+
+	Improvements:
+
+	- The requirement of 5.008 can be dropped.
+
 2.033: Tue Dec 24 14:58:12 CET 2002
 
 	Improvements:

@@ -1,5 +1,5 @@
 package Mail::Box::Parser::C;
-our $VERSION = 2.033;
+our $VERSION = 2.034;
 
 use strict;
 use warnings;
