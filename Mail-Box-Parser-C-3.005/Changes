@@ -2,6 +2,13 @@ Revision history for Perl extension Mail::Box::Parser::C.
 
 Mail::Box::Parser::C requires Mail::Box.
 
+version 3.005: Mon May 31 17:26:23 CEST 2004
+
+	Fixes:
+
+	- Removed recursive dependency for Mail::Box.  Seems unsolvable.
+	  [Jeff Squyres] and [Liz Mattijsen]
+
 version 3.004: Mon Apr 5 07:55:52 CEST 2004
 
 	Fixes:
