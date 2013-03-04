@@ -1,17 +1,22 @@
 package Mail::Box::Parser::C;
-our $VERSION = 3.006;
+use base qw/Mail::Box::Parser Exporter DynaLoader/;
+
+our $VERSION = 3.007;
 
 use strict;
 use warnings;
 use Carp;
 
-use base qw/Mail::Box::Parser Exporter DynaLoader/;
-
-=head1 NAME
+=chapter NAME
 
 Mail::Box::Parser::C - Parsing folders for MailBox with C routines
 
-=head1 DESCRIPTION
+=chapter SYNOPSIS
+
+=chapter DESCRIPTION
+
+The Mail::Box::Parser::C implements parsing of messages in ANSI C,
+using Perl's XS extension facility.  
 
 This is an optional module for MailBox, and will (once installed)
 automatically be used by MailBox to parse e-mail message content when
@@ -29,7 +34,7 @@ our %EXPORT_TAGS =
  );
 
 
-our @EXPORT_OK = ( @{$EXPORT_TAGS{field}} );
+our @EXPORT_OK = @{$EXPORT_TAGS{field}};
 
 bootstrap Mail::Box::Parser::C $VERSION;
 
@@ -55,66 +60,31 @@ sub body_delayed($$$);
 #fold_header_line(char *original, int wrap)
 #in_dosmode(int boxnr)
 
-=head1 NAME
+=chapter METHODS
 
-Mail::Box::Parser::C - reading messages from file using C (XS)
+=section Initiation
 
-=head1 SYNOPSIS
+=section The Parser
 
-=head1 DESCRIPTION
-
-The Mail::Box::Parser::C implements parsing of messages in ANSI C,
-using Perl's XS extension facility.  
-
-=head1 METHODS
+=section Parsing
 
 =cut
-
-#------------------------------------------
-
-=head2 Initiation
-
-=cut
-
-#------------------------------------------
-
-=head2 The Parser
-
-=cut
-
-#------------------------------------------
-
-=head2 Parsing
-
-=cut
-
-#------------------------------------------
 
 sub pushSeparator($)
 {   my ($self, $sep) = @_;
     push_separator $self->{MBPC_boxnr}, $sep;
 }
 
-#------------------------------------------
-
 sub popSeparator() { pop_separator shift->{MBPC_boxnr} }
     
-#------------------------------------------
-
 sub filePosition(;$)
 {   my $boxnr = shift->{MBPC_boxnr};
     @_ ? set_position($boxnr, shift) : get_position($boxnr);
 }
 
-#------------------------------------------
-
 sub readHeader() { read_header shift->{MBPC_boxnr} }
 
-#------------------------------------------
-
 sub readSeparator() { read_separator shift->{MBPC_boxnr} }
-
-#------------------------------------------
 
 sub bodyAsString(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -123,17 +93,12 @@ sub bodyAsString(;$$)
     body_as_string $self->{MBPC_boxnr}, $exp_chars, $exp_lines;
 }
 
-
-#------------------------------------------
-
 sub bodyAsList(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
     $exp_chars = -1 unless defined $exp_chars;
     $exp_lines = -1 unless defined $exp_lines;
     body_as_list $self->{MBPC_boxnr}, $exp_chars, $exp_lines;
 }
-
-#------------------------------------------
 
 sub bodyAsFile($;$$)
 {   my ($self, $file, $exp_chars, $exp_lines) = @_;
@@ -144,11 +109,8 @@ sub bodyAsFile($;$$)
 
 #------------------------------------------
 
-=head2 Reading and Writing [internals]
-
+=section Reading and Writing [internals]
 =cut
-
-#------------------------------------------
 
 sub bodyDelayed(;$$)
 {   my ($self, $exp_chars, $exp_lines) = @_;
@@ -156,8 +118,6 @@ sub bodyDelayed(;$$)
     $exp_lines = -1 unless defined $exp_lines;
     body_delayed $self->{MBPC_boxnr}, $exp_chars, $exp_lines;
 }
-
-#------------------------------------------
 
 sub openFile($)
 {   my ($self, $args) = @_;
@@ -176,15 +136,11 @@ sub openFile($)
     defined $boxnr ? $self : undef;
 }
 
-#------------------------------------------
-
 sub closeFile() {
    my $boxnr = delete shift->{MBPC_boxnr};
    return unless defined $boxnr;
    close_file $boxnr;
 }
-
-#------------------------------------------
 
 1;
 

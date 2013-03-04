@@ -1,9 +1,9 @@
-Changes
 C.pm
 C.xs
+Changes
 LICENSE
-Makefile.PL
 MANIFEST
+META.yml
+Makefile.PL
 README
 test.pl
-META.yml

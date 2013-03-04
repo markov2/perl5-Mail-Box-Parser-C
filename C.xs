@@ -12,8 +12,12 @@
 #define TRACE_NOTICES   2
 #define TRACE_DEBUG     1
 
-#ifndef MAX_LINE
-#define MAX_LINE        1024
+/* [3.007] Although the rfc5322 spec says max 1000, we do permit a larger
+ * header-line for "robustness"
+ */
+
+#ifndef DFLT_LINE
+#define DFLT_LINE       1024
 #endif
 
 #ifndef NULL
@@ -53,8 +57,8 @@ typedef struct
     int         strip_gt;
     int         keep_line;         /* unget line */
 
-    char        line[MAX_LINE+2];  /* one more for missing newline on *
-                                    * last line of file on Windows    */
+    char      * line;
+    int         line_buf_size;
     long        line_start;
 } Mailbox;
 
@@ -78,6 +82,8 @@ Mailbox * new_mailbox(char *filename)
     New(0, box->filename, strlen(filename)+1, char);
     strcpy(box->filename, filename);
 
+    New(0, box->line, DFLT_LINE, char);
+    box->line_buf_size = DFLT_LINE;
     return box;
 }
 
@@ -144,8 +150,28 @@ static char * get_one_line(Mailbox *box)
     }
 
     box->line_start = (long)ftell(box->file);
-    if(!fgets(box->line, MAX_LINE, box->file))
+    int bufsize     = box->line_buf_size;
+    int bytes       = 0;
+
+    while(1)
+    {   if(!fgets(box->line + bytes, bufsize - bytes, box->file))
+            break;
+
+        bytes = strlen(box->line);
+        if(bytes < bufsize-1 || box->line[bufsize-1]=='\n')
+            break;
+
+        /* Extend header line buffer to contain more than DFLT_SIZE
+         * chars.  Rfc5322 restricts size to 998 octets, but larger
+         * headers are encountered in the wild.
+         */
+        bufsize = box->line_buf_size *= 2;
+        Renew(box->line, bufsize, char);
+    }
+
+    if(!bytes)
         return NULL;
+
 
     if(box->dosmode)
     {   int len = strlen(box->line);
@@ -658,7 +684,7 @@ MBPC_push_separator(int boxnr, char *line_start)
     box  = get_box(boxnr);
     if(box==NULL) return;
 
-    /*fprintf(stderr, "separator\n");*/
+    /*fprintf(stderr, "separator %s\n", line_start);*/
     New(0, sep, 1, Separator);
     sep->length     = strlen(line_start);
 
@@ -694,6 +720,7 @@ MBPC_pop_separator(int boxnr)
     if(strncmp(old->line, "From ", old->length)==0)
         box->strip_gt--;
 
+    /*fprintf(stderr, "pop sep %s\n", old->line);*/
     box->separators = old->next;
     RETVAL = newSVpv(old->line, old->length);
 

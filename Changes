@@ -2,6 +2,12 @@ Revision history for Perl extension Mail::Box::Parser::C.
 
 Mail::Box::Parser::C requires Mail::Box.
 
+version 3.007: Mon Mar  4 22:25:53 CET 2013
+
+	Improvements:
+	- max header field length from 1024 to unlimited.
+	  rt.cpan.org#83749 [Jonathan Kamens]
+
 version 3.006: Wed Sep 22 14:50:08 CEST 2004
 
 	Interface changes:
