@@ -1,4 +1,3 @@
-C.pm
 C.xs
 Changes
 LICENSE
@@ -6,4 +5,5 @@ MANIFEST
 META.yml
 Makefile.PL
 README
-test.pl
+lib/Mail/Box/Parser/C.pm
+t/01use.t

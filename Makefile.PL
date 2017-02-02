@@ -2,7 +2,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile
  ( NAME          => 'Mail::Box::Parser::C'
- , VERSION_FROM  => 'C.pm'
+ , VERSION_FROM  => 'lib/Mail/Box/Parser/C.pm'
  , PREREQ_PM     =>
      { Test::More => 0.47
      }
@@ -20,9 +20,10 @@ DISTDIR         = ../public_html/mailboxc/source
 LICENSE         = artistic
 
 # for POD
-FIRST_YEAR      = 2002-2004,2013
+FIRST_YEAR      = 2002
 EMAIL           = perl@overmeer.net
 WEBSITE         = http://perl.overmeer.net/mailbox/
+PODTAIL         = ../MailBox-shared-podtail
 
 __POSTAMBLE
 
