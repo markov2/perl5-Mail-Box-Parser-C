@@ -1,10 +1,15 @@
+# This code is part of distribution Mail-Box-Parser-C.  Meta-POD processed
+# with OODoc into POD and HTML manual-pages.  See README.md
+# Copyright Mark Overmeer.  Licensed under the same terms as Perl itself.
+
 package Mail::Box::Parser::C;
 use base qw/Mail::Box::Parser Exporter DynaLoader/;
 
-our $VERSION = 3.008;
+our $VERSION = '3.010';
 
 use strict;
 use warnings;
+
 use Carp;
 
 =chapter NAME
