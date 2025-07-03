@@ -6,6 +6,9 @@ version 3.012:
 	Changes:
 	- MailBox mid-life  upgrade: require Perl minimal version 5.016.
 
+	Improvements:
+	- add .gitignore
+
 version 3.011: Fri Sep 15 20:17:44 CEST 2023
 
 	3.010 Not indexed by CPAN, try to recover by uploading a new
