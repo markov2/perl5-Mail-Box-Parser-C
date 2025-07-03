@@ -1,5 +1,7 @@
 use ExtUtils::MakeMaker;
 
+requrie 5.016;
+
 WriteMakefile
  ( NAME          => 'Mail::Box::Parser::C'
  , VERSION_FROM  => 'lib/Mail/Box/Parser/C.pm'
