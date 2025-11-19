@@ -10,6 +10,7 @@ version 3.012:
 	- add .gitignore
 	- convert install process to OODoc 3.05
 	- restyle code to OODoc v3
+	- depend on Mail::Message v3, not 4.
 
 version 3.011: Fri Sep 15 20:17:44 CEST 2023
 

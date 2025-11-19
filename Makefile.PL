@@ -44,7 +44,9 @@ my %oodist   = (
 	],
 );
 
-my %requires;
+my %requires = (
+	'Mail::Message' => '3.0, <4.0',
+);
 
 WriteMakefile
 	NAME          => 'Mail::Box::Parser::C',

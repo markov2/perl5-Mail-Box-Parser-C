@@ -10,8 +10,17 @@ This module is a companion for the MailBox suite.  It provides an XS version
 of the mbox parser.  When installed, it will be detected automatically.  It
 will improve te performance of reading mboxes (a bit)
 
+## Installing
+
 This distribution requires a C compiler, which may not be available... and
 is therefore optional.  Most MailBox users will not have it installed.
+
+On github, you can find the processed version for each release.  But the
+better source is CPAN; to get it installed simply run:
+
+```sh
+   cpan -i Mail::Box::Parser::C
+```
 
 ## Development &rarr; Release
 
@@ -26,13 +35,6 @@ existed, sorry for the confusion)
 
 Clone from github for the "raw" version.  For instance, when you want
 to contribute a new feature.
-
-On github, you can find the processed version for each release.  But the
-better source is CPAN; to get it installed simply run:
-
-```sh
-   cpan -i Mail::Box::Parser::C
-```
 
 ## Contributing
 
