@@ -30,6 +30,10 @@ automatically be used by MailBox to parse e-mail message content when
 the message is supplied as file-handle.  In all other cases,
 MailBox will use L<Mail::Box::Parser::Perl>.
 
+B<This is a maintenance release for the old interface>.  Read
+F<https://github.com/markov2/perl5-Mail-Box/wiki/> how
+to move towards version 4.
+
 =cut
 
 use Mail::Message::Field ();

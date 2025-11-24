@@ -1,10 +1,15 @@
 
 === Revision history for distribution Mail-Box-Parser-C.
 
+#!!! This is the maintenance version of this module.  When you start fresh,
+#!!! go for version 4 (or higher).  On github, this code is branch 'maint3'
+#!!! Convert? See F<https://github.com/markov2/perl5-Mail-Box/wiki/>
+
 version 3.012:
 
 	Changes:
 	- MailBox mid-life  upgrade: require Perl minimal version 5.016.
+	- maintenance release with Mail::Box version 3 compatibility.
 
 	Improvements:
 	- add .gitignore

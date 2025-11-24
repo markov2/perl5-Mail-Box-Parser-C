@@ -45,7 +45,7 @@ my %oodist   = (
 );
 
 my %requires = (
-	'Mail::Message' => '3.0, <4.0',
+	'Mail::Message' => '4.0',
 );
 
 WriteMakefile
