@@ -4,14 +4,14 @@
 #oodist: testing, however the code of this development version may be broken!
 
 package Mail::Box::Parser::C;
-use base qw/Mail::Box::Parser Exporter DynaLoader/;
+use parent qw/Mail::Box::Parser Exporter DynaLoader/;
 
 our $VERSION = '3.012';
 
 use strict;
 use warnings;
 
-use Carp;
+use Log::Report   'mail-box-parser-c';
 
 #--------------------
 =chapter NAME
@@ -29,6 +29,12 @@ This is an optional module for MailBox, and will (once installed)
 automatically be used by MailBox to parse e-mail message content when
 the message is supplied as file-handle.  In all other cases,
 MailBox will use L<Mail::Box::Parser::Perl>.
+
+B<Be aware:>
+This module versions 4.0 and up is not fully compatible with older releases:
+mainly the exception handling has changed.  When you need to upgrade, please
+read F<https://github.com/markov2/perl5-Mail-Box/wiki/>
+B<Version 3 is still maintained> and may see new releases as well.
 
 =cut
 
@@ -83,16 +89,16 @@ sub pushSeparator($)
 	push_separator $self->{MBPC_boxnr}, $sep;
 }
 
-sub popSeparator() { pop_separator shift->{MBPC_boxnr} }
+sub popSeparator()  { pop_separator $_[0]->{MBPC_boxnr} }
 
 sub filePosition(;$)
 {	my $boxnr = shift->{MBPC_boxnr};
 	@_ ? set_position($boxnr, shift) : get_position($boxnr);
 }
 
-sub readHeader() { read_header shift->{MBPC_boxnr} }
+sub readHeader()    { read_header $_[0]->{MBPC_boxnr} }
 
-sub readSeparator() { read_separator shift->{MBPC_boxnr} }
+sub readSeparator() { read_separator $_[0]->{MBPC_boxnr} }
 
 sub bodyAsString(;$$)
 {	my ($self, $exp_chars, $exp_lines) = @_;
