@@ -74,52 +74,49 @@ sub body_delayed($$$);
 #--------------------
 =chapter METHODS
 
-=section Initiation
+=section Attributes
 
-=section The Parser
-
-=section Parsing
-
+=method boxnr
+The number internally used by the C implementation to administer a
+single mail folder access.
 =cut
+
+sub boxnr() { $_[0]->{MBPC_boxnr} }
 
 sub pushSeparator($)
 {	my ($self, $sep) = @_;
-	push_separator $self->{MBPC_boxnr}, $sep;
+	push_separator $self->boxnr, $sep;
 }
 
-sub popSeparator() { pop_separator shift->{MBPC_boxnr} }
+sub popSeparator()  { pop_separator $_[0]->boxnr }
 
 sub filePosition(;$)
-{	my $boxnr = shift->{MBPC_boxnr};
+{	my $boxnr = shift->boxnr;
 	@_ ? set_position($boxnr, shift) : get_position($boxnr);
 }
 
-sub readHeader() { read_header shift->{MBPC_boxnr} }
+sub readHeader()    { read_header $_[0]->boxnr }
 
-sub readSeparator() { read_separator shift->{MBPC_boxnr} }
+sub readSeparator() { read_separator $_[0]->boxnr }
 
 sub bodyAsString(;$$)
 {	my ($self, $exp_chars, $exp_lines) = @_;
-	body_as_string $self->{MBPC_boxnr}, $exp_chars // -1, $exp_lines // -1;
+	body_as_string $self->boxnr, $exp_chars // -1, $exp_lines // -1;
 }
 
 sub bodyAsList(;$$)
 {	my ($self, $exp_chars, $exp_lines) = @_;
-	body_as_list $self->{MBPC_boxnr}, $exp_chars // -1, $exp_lines // -1;
+	body_as_list $self->boxnr, $exp_chars // -1, $exp_lines // -1;
 }
 
 sub bodyAsFile($;$$)
 {	my ($self, $file, $exp_chars, $exp_lines) = @_;
-	body_as_file $self->{MBPC_boxnr}, $file, $exp_chars // -1, $exp_lines // -1;
+	body_as_file $self->boxnr, $file, $exp_chars // -1, $exp_lines // -1;
 }
-
-#--------------------
-=section Reading and Writing [internals]
-=cut
 
 sub bodyDelayed(;$$)
 {	my ($self, $exp_chars, $exp_lines) = @_;
-	body_delayed $self->{MBPC_boxnr}, $exp_chars // -1, $exp_lines // -1;
+	body_delayed $self->boxnr, $exp_chars // -1, $exp_lines // -1;
 }
 
 sub openFile($)
