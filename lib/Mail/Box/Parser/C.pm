@@ -4,7 +4,7 @@
 #oodist: testing, however the code of this development version may be broken!
 
 package Mail::Box::Parser::C;
-use parent qw/Mail::Box::Parser Exporter DynaLoader/;
+use parent qw/Mail::Box::Parser DynaLoader/;
 
 our $VERSION = '3.012';
 
@@ -12,6 +12,8 @@ use strict;
 use warnings;
 
 use Log::Report   'mail-box-parser-c';
+
+use Mail::Message::Field ();
 
 #--------------------
 =chapter NAME
@@ -37,17 +39,6 @@ read F<https://github.com/markov2/perl5-Mail-Box/wiki/>
 B<Version 3 is still maintained> and may see new releases as well.
 
 =cut
-
-use Mail::Message::Field ();
-
-our %EXPORT_TAGS = (
-	field => [ qw( ) ],
-	head  => [ qw( ) ],
-	body  => [ qw( ) ],
-);
-
-
-our @EXPORT_OK = @{$EXPORT_TAGS{field}};
 
 bootstrap Mail::Box::Parser::C $VERSION;
 
