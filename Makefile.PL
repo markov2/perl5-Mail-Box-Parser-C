@@ -14,6 +14,7 @@ my %oodist   = (
 	email    => "markov\@cpan.org",
 
 	include  => [
+		'../Mail-Message',   # for Mail::Box::Parser
 	],
 
 	use      => [
