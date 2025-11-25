@@ -9,7 +9,7 @@ version 3.013:
 
 	Fixes:
 	- dependency on Mail::Message 3, not 4.
-	  github issue #1 [Slaven Rezic] cpantesters
+	  github issue #1 [Slaven Rezić] cpantesters
 
 version 3.012: Mon 24 Nov 19:15:06 CET 2025
 
