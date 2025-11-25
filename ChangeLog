@@ -10,6 +10,7 @@ version 3.013:
 	Fixes:
 	- dependency on Mail::Message 3, not 4.
 	  github issue #1 [Slaven Rezić] cpantesters
+	- doesn't export anything
 
 	Improvements:
 	- introduce attribute boxnr
