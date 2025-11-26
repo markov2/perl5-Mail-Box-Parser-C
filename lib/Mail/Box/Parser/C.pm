@@ -8,7 +8,7 @@
 package Mail::Box::Parser::C;
 use base qw/Mail::Box::Parser DynaLoader/;
 
-our $VERSION = '3.013';
+our $VERSION = '3.014';
 
 use strict;
 use warnings;
