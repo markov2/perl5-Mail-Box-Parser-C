@@ -11,6 +11,9 @@ version 3.013:
 	- dependency on Mail::Message 3, not 4.
 	  github issue #1 [Slaven Rezić] cpantesters
 	- doesn't export anything
+	- missing methods after Mail::Message 3.018
+	  github Mail::Message issue #25 [Slaven Rezić] cpantesters
+	  github issue #2
 
 	Improvements:
 	- introduce attribute boxnr
