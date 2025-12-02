@@ -114,15 +114,15 @@ sub bodyDelayed(;$$)
 
 sub openFile($)
 {	my ($self, $args) = @_;
-	my %log = $self->logSettings;
+	my $trace = $args{trace} || 0;
 
 	my $boxnr;
 	if(my $file = $args->{file})
 	{	my $name = $args->{filename} || "$file";
-		$boxnr   = open_filehandle($file, $name, $log{trace});
+		$boxnr   = open_filehandle($file, $name, $trace);
 	}
 	else
-	{	$boxnr   = open_filename($args->{filename}, $args->{mode}, $log{trace});
+	{	$boxnr   = open_filename($args->{filename}, $args->{mode}, $trace);
 	}
 
 	$self->{MBPC_boxnr} = $boxnr;
