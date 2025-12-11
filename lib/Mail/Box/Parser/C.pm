@@ -114,7 +114,7 @@ sub bodyDelayed(;$$)
 
 sub openFile($)
 {	my ($self, $args) = @_;
-	my $trace = $args{trace} || 0;
+	my $trace = $args->{trace} || 0;
 
 	my $boxnr;
 	if(my $file = $args->{file})
