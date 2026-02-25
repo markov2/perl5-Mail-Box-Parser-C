@@ -5,7 +5,10 @@
 #!!! go for version 4 (or higher).  On github, this code is branch 'maint3'
 #!!! Convert? See F<https://github.com/markov2/perl5-Mail-Box/wiki/>
 
-version 3.014:
+#XXX Change version in lib/Mail/Box/Parser/C.pm
+version 3.015:
+
+version 3.014: Wed 25 Feb 13:37:40 CET 2026
 
 	Fixes:
 	- mbox reading was not initialized [Edoardo Geraci]
