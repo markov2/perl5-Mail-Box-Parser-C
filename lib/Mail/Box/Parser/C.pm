@@ -69,7 +69,7 @@ sub body_delayed($$$);
 
 =section Constructors
 
-=method new %options
+=c_method new %options
 
 =requires  filename FILENAME
 The name of the file to be read.
