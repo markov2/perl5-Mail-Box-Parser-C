@@ -7,6 +7,9 @@
 
 version 3.014:
 
+	Fixes:
+	- mbox reading was not initialized [Edoardo Geraci]
+
 version 3.013: Wed 26 Nov 09:47:06 CET 2025
 
 	Fixes:

@@ -40,7 +40,7 @@ to move towards version 4.
 
 bootstrap Mail::Box::Parser::C $VERSION;
 
-## Defined in the library
+## Defined in the XS library
 sub open_filename($$$);
 sub open_filehandle($$$);
 sub get_filehandle($);
@@ -84,40 +84,44 @@ File open $mode, which defaults to C<'r'>, which means `read-only'.
 See C<perldoc -f open> for possible modes.  Only applicable
 when no P<file> is specified.
 
+=error filename or handle required to create a parser.
 =cut
 
 sub init(@)
 {	my ($self, $args) = @_;
-	$self->SUPER::init($args) or return;
+	$self->SUPER::init($args);
 
-	$self->{MBPC_mode}     = $args->{mode} || 'r';
-	$self->{MBPC_filename} = $args->{filename} || ref $args->{file}
-		or $self->log(ERROR => "Filename or handle required to create a parser."), return;
+	$self->{MBPC_file}     = my $fh = $args->{file};
+	$self->{MBPC_mode}     = $args->{mode}     || 'r';
+	$self->{MBPC_filename} = $args->{filename} || ref $fh
+		or error __x"filename or handle required to create a parser.";
 
-	$self->start(file => $args->{file});
+	$self->start;
 	$self;
 }
 
 #--------------------
 =section Attributes
 
-=method boxnr
-The number internally used by the C implementation to administer a
-single mail folder access.
-=cut
-
-sub boxnr() { $_[0]->{MBPC_boxnr} }
-
 =method filename
 Returns the name of the file this parser is working on.
-
 =method openMode
 =method file
+Only returns a value when passed as instantiation parameter.  Otherwise,
+the used file-handle stays in 'C-space'.  The connection between C and
+Perl is via the M<boxnr()>.
 =cut
 
 sub filename() { $_[0]->{MBPC_filename} }
 sub openMode() { $_[0]->{MBPC_mode} }
 sub file()     { $_[0]->{MBPC_file} }
+
+=method boxnr
+The number internally used by the C implementation to administer a
+single mail folder access.
+=cut
+
+sub boxnr()    { $_[0]->{MBPC_boxnr} }
 
 #--------------------
 =section Parsing
@@ -250,9 +254,11 @@ sub openFile(%)
 
 	my $boxnr;
 	my $name = $args{filename} || $self->filename;
+	my $mode = $args{mode}     || $self->openMode;
+	my $fh   = $args{file}     || $self->file;
 
 	if(my $file = $args{file})
-	{	$boxnr   = open_filehandle($file, $name // "$file", $log{trace});
+	{	$boxnr   = open_filehandle($fh, $name // "$fh", $log{trace});
 	}
 	else
 	{	my $mode = $args{mode} || $self->openMode || 'r';
